@@ -11,6 +11,7 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class ContaModel {
+
     @Column(name = "conta_numero")
     private Long numero;
     @Column(name = "conta_saldo")
