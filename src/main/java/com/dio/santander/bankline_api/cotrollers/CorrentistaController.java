@@ -31,4 +31,5 @@ public class CorrentistaController {
     public ResponseEntity<Object> CriarCorrentista(@RequestBody CorrentistaDto correntistaDto){
        return  correntistaService.save(correntistaDto);
     }
+
 }

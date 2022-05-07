@@ -29,6 +29,7 @@ public class CorrentistaService {
         if(correntistaRepository.existsByCpf(correntistaDto.getCpf())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro: este cpj já está cadastrado");
         }
+
         var correntistaModel = new CorrentistaModel();
         var conta = new ContaModel();
         BeanUtils.copyProperties(correntistaDto, correntistaModel);

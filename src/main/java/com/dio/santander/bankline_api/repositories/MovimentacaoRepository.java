@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface MovimentacaoRepository extends JpaRepository<MovimentacaoModel, UUID> {
+    boolean existsByContaId(UUID contaId);
 }

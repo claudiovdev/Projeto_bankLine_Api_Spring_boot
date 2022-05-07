@@ -7,6 +7,8 @@ import com.dio.santander.bankline_api.models.MovimentacaoModel;
 import com.dio.santander.bankline_api.repositories.CorrentistaRepository;
 import com.dio.santander.bankline_api.repositories.MovimentacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,11 +24,18 @@ public class MovimentacaoService {
     @Autowired
     CorrentistaRepository correntistaRepository;
 
-    public List<MovimentacaoModel> findAll() {
-        return movimentacaoRepository.findAll();
+    //public List<MovimentacaoModel> findAll() {return movimentacaoRepository.findAll();}
+
+    public ResponseEntity<List<MovimentacaoModel>>findAll(){
+        return ResponseEntity.status(HttpStatus.OK).body(movimentacaoRepository.findAll());
     }
 
-    public void save(MovimentacaoDto movimentacaoDto){
+    public ResponseEntity<Object> save(MovimentacaoDto movimentacaoDto){
+
+        if(!movimentacaoRepository.existsByContaId(movimentacaoDto.getContaId())){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro: conta não registrada");
+        }
+
         var movimentacaoModel = new MovimentacaoModel();
         //Double valor = movimentacaoDto.getMovimentacaoTipo()==MovimentacaoTipo.RECEITA ? movimentacaoDto.getValor() : movimentacaoDto.getValor() *-1;
         Double valor = movimentacaoDto.getValor();
@@ -34,6 +43,8 @@ public class MovimentacaoService {
         if(movimentacaoDto.getMovimentacaoTipo() == MovimentacaoTipo.DESPESA){
             valor = valor * -1;
         }
+
+
         movimentacaoModel.setDataHora(LocalDateTime.now());
         movimentacaoModel.setDescricao(movimentacaoDto.getDescricao());
         movimentacaoModel.setContaId(movimentacaoDto.getContaId());
@@ -46,7 +57,7 @@ public class MovimentacaoService {
             correntistaRepository.save(correntista);
         }
 
-        movimentacaoRepository.save(movimentacaoModel);
+         return ResponseEntity.status(HttpStatus.OK).body(movimentacaoRepository.save(movimentacaoModel)) ;
     }
 
 
