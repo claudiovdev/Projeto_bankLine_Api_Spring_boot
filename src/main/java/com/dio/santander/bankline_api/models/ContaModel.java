@@ -16,5 +16,5 @@ public class ContaModel {
     private Long numero;
     @Column(name = "conta_saldo", nullable = false)
     private Double saldo;
-    
+
 }

@@ -28,7 +28,7 @@ public class CorrentistaController {
 
 
     @PostMapping("/correntista")
-    public void CriarCorrentista(@RequestBody CorrentistaDto correntistaDto){
-        correntistaService.save(correntistaDto);
+    public ResponseEntity<Object> CriarCorrentista(@RequestBody CorrentistaDto correntistaDto){
+       return  correntistaService.save(correntistaDto);
     }
 }
