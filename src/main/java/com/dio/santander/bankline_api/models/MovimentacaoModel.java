@@ -27,4 +27,7 @@ public class MovimentacaoModel implements Serializable {
 
     @Enumerated(EnumType.STRING)
     MovimentacaoTipo movimentacaoTipo;
+
+    @Column(name = "conta_id")
+    private UUID contaId;
 }
