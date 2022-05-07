@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -24,6 +26,7 @@ public class CorrentistaService {
     public ResponseEntity<List<CorrentistaModel>>findAll(){
         return ResponseEntity.status(HttpStatus.OK).body(correntistaRepository.findAll());
     }
+    
     public ResponseEntity<Object>save(CorrentistaDto correntistaDto) {
 
         if(correntistaRepository.existsByCpf(correntistaDto.getCpf())){
@@ -37,5 +40,13 @@ public class CorrentistaService {
         conta.setNumero(new Date().getTime());
         correntistaModel.setConta(conta);
        return ResponseEntity.status(HttpStatus.CREATED).body(correntistaRepository.save(correntistaModel));
+    }
+
+    public ResponseEntity<Object> findById(UUID correntistaId) {
+        Optional<CorrentistaModel> correntistaModelOptional = correntistaRepository.findById(correntistaId);
+        if(!correntistaModelOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro: correntista não encontrado");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(correntistaModelOptional.get());
     }
 }

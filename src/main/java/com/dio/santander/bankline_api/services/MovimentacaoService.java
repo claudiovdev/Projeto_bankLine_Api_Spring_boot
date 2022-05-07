@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class MovimentacaoService {
@@ -33,7 +35,7 @@ public class MovimentacaoService {
     public ResponseEntity<Object> save(MovimentacaoDto movimentacaoDto){
 
         if(!movimentacaoRepository.existsByContaId(movimentacaoDto.getContaId())){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro: conta não registrada");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro: conta não registrada");
         }
 
         var movimentacaoModel = new MovimentacaoModel();
@@ -58,6 +60,16 @@ public class MovimentacaoService {
         }
 
          return ResponseEntity.status(HttpStatus.OK).body(movimentacaoRepository.save(movimentacaoModel)) ;
+    }
+
+
+    public ResponseEntity<Object> findById(UUID movimentacaoId) {
+        Optional<MovimentacaoModel> movimentacaoModelOptional = movimentacaoRepository.findById(movimentacaoId);
+
+        if(!movimentacaoModelOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro: movimentação não encontrada!");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(movimentacaoModelOptional.get());
     }
 
 

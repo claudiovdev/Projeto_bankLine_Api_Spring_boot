@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping()
@@ -22,9 +23,15 @@ public class MovimentacaoController {
     public ResponseEntity<List<MovimentacaoModel>> visualizarMovimentacoes(){
         return movimentacaoService.findAll();
     }
+    @GetMapping("movimentacao/{movimentacaoId}")
+    public ResponseEntity<Object> buscandoUmaMovimentacao(@PathVariable(value = "movimentacaoId")UUID movimentacaoId){
+        return movimentacaoService.findById(movimentacaoId);
+    }
 
     @PostMapping("/movimentacao")
     public ResponseEntity<Object> criarMovimentacao(@RequestBody MovimentacaoDto movimentacaoDto){
         return ResponseEntity.status(HttpStatus.OK).body(movimentacaoService.save(movimentacaoDto));
     }
+
+
 }
