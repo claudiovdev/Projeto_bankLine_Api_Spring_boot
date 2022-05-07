@@ -19,8 +19,10 @@ public class CorrentistaModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID corentistaId;
 
+    @Column(nullable = false, unique = true, length = 11)
     private String cpf;
 
+    @Column(nullable = false, length = 100)
     private String nome;
 
     @Embedded

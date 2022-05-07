@@ -6,6 +6,8 @@ import com.dio.santander.bankline_api.models.CorrentistaModel;
 import com.dio.santander.bankline_api.repositories.CorrentistaRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -19,18 +21,20 @@ public class CorrentistaService {
     CorrentistaRepository correntistaRepository;
 
 
-    public List<CorrentistaModel> findAll() {
-        return correntistaRepository.findAll();
+    public ResponseEntity<List<CorrentistaModel>>findAll(){
+        return ResponseEntity.status(HttpStatus.OK).body(correntistaRepository.findAll());
     }
+    public ResponseEntity<Object>save(CorrentistaDto correntistaDto) {
 
-    public void save(CorrentistaDto correntistaDto) {
-
+        if(correntistaRepository.existsByCpf(correntistaDto.getCpf())){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro: este cpj já está cadastrado");
+        }
         var correntistaModel = new CorrentistaModel();
         var conta = new ContaModel();
         BeanUtils.copyProperties(correntistaDto, correntistaModel);
         conta.setSaldo(0.0);
         conta.setNumero(new Date().getTime());
         correntistaModel.setConta(conta);
-        correntistaRepository.save(correntistaModel);
+       return ResponseEntity.status(HttpStatus.CREATED).body(correntistaRepository.save(correntistaModel));
     }
 }
