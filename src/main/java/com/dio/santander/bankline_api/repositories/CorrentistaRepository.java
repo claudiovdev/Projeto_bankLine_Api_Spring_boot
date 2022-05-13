@@ -9,4 +9,5 @@ import java.util.UUID;
 public interface CorrentistaRepository extends JpaRepository<CorrentistaModel, UUID> {
 
     boolean existsByCpf(String cpf);
+
 }
