@@ -4,6 +4,8 @@ import com.dio.santander.bankline_api.models.MovimentacaoModel;
 import com.dio.santander.bankline_api.repositories.CorrentistaRepository;
 import com.dio.santander.bankline_api.repositories.MovimentacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,5 +42,9 @@ public class MovimentacaoService {
 
     public void delete(MovimentacaoModel movimentacaoModel) {
         movimentacaoRepository.delete(movimentacaoModel);
+    }
+
+    public Page<MovimentacaoModel> findAll(Pageable pageable) {
+        return movimentacaoRepository.findAll(pageable);
     }
 }

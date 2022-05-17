@@ -8,6 +8,10 @@ import com.dio.santander.bankline_api.services.CorrentistaService;
 import com.dio.santander.bankline_api.services.MovimentacaoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +32,11 @@ public class MovimentacaoController {
     CorrentistaService correntistaService;
 
     @GetMapping("/movimentacoes")
-    public ResponseEntity<List<MovimentacaoModel>> visualizarMovimentacoes(){
-        return ResponseEntity.status(HttpStatus.OK).body(movimentacaoService.findAll());
+    public ResponseEntity<Page<MovimentacaoModel>> visualizarMovimentacoes(@PageableDefault(page = 0, size = 10, sort = "movimentacaoId", direction = Sort.Direction.ASC)
+                                                                               Pageable pageable){
+        Page<MovimentacaoModel> movimentacaoModelPage = movimentacaoService.findAll(pageable);
+
+        return ResponseEntity.status(HttpStatus.OK).body(movimentacaoModelPage);
     }
 
     @GetMapping("movimentacao/{movimentacaoId}")

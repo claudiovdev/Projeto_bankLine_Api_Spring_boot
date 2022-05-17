@@ -6,6 +6,10 @@ import com.dio.santander.bankline_api.models.CorrentistaModel;
 import com.dio.santander.bankline_api.services.CorrentistaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +28,10 @@ public class CorrentistaController {
     CorrentistaService correntistaService;
 
     @GetMapping("/correntistas")
-    public ResponseEntity<List<CorrentistaModel>> VisualizarCorrentistas(){
-        return correntistaService.findAll();
+    public ResponseEntity<Page<CorrentistaModel>> VisualizarCorrentistas(@PageableDefault(page = 0, size = 10, sort = "corentistaId", direction = Sort.Direction.ASC)
+                                                                             Pageable pageable) {
+        Page<CorrentistaModel> correntistaModelPage = correntistaService.findAll(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(correntistaModelPage);
     }
 
 
