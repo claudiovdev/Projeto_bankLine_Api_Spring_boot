@@ -2,6 +2,7 @@ package com.dio.santander.bankline_api.models;
 
 
 import com.dio.santander.bankline_api.enums.MovimentacaoTipo;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,9 +21,13 @@ public class MovimentacaoModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID movimentacaoId;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     @Column(name = "data_hora")
     private LocalDateTime dataHora;
+
     private String descricao;
+    
     private Double valor;
 
     @Enumerated(EnumType.STRING)

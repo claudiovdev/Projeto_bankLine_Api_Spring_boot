@@ -6,6 +6,7 @@ import com.dio.santander.bankline_api.models.CorrentistaModel;
 import com.dio.santander.bankline_api.models.MovimentacaoModel;
 import com.dio.santander.bankline_api.services.CorrentistaService;
 import com.dio.santander.bankline_api.services.MovimentacaoService;
+import com.dio.santander.bankline_api.specifications.SpecificationTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,9 +33,9 @@ public class MovimentacaoController {
     CorrentistaService correntistaService;
 
     @GetMapping("/movimentacoes")
-    public ResponseEntity<Page<MovimentacaoModel>> visualizarMovimentacoes(@PageableDefault(page = 0, size = 10, sort = "movimentacaoId", direction = Sort.Direction.ASC)
-                                                                               Pageable pageable){
-        Page<MovimentacaoModel> movimentacaoModelPage = movimentacaoService.findAll(pageable);
+    public ResponseEntity<Page<MovimentacaoModel>> visualizarMovimentacoes(SpecificationTemplate.MoviSpec spec,
+                                                                           @PageableDefault(page = 0, size = 10, sort = "movimentacaoId", direction = Sort.Direction.ASC) Pageable pageable){
+        Page<MovimentacaoModel> movimentacaoModelPage = movimentacaoService.findAll(spec,pageable);
 
         return ResponseEntity.status(HttpStatus.OK).body(movimentacaoModelPage);
     }
@@ -51,9 +52,7 @@ public class MovimentacaoController {
 
     @PostMapping("/movimentacao")
     public ResponseEntity<Object> criarMovimentacao(@RequestBody MovimentacaoDto movimentacaoDto){
-        if(!movimentacaoService.existsByContaId(movimentacaoDto.getContaId())){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro: conta não registrada");
-        }
+
 
         var movimentacaoModel = new MovimentacaoModel();
         //Double valor = movimentacaoDto.getMovimentacaoTipo()==MovimentacaoTipo.RECEITA ? movimentacaoDto.getValor() : movimentacaoDto.getValor() *-1;

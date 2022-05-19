@@ -2,9 +2,11 @@ package com.dio.santander.bankline_api.services;
 
 import com.dio.santander.bankline_api.models.CorrentistaModel;
 import com.dio.santander.bankline_api.repositories.CorrentistaRepository;
+import com.dio.santander.bankline_api.specifications.SpecificationTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,9 +23,9 @@ public class CorrentistaService {
     CorrentistaRepository correntistaRepository;
 
 
-    public ResponseEntity<List<CorrentistaModel>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(correntistaRepository.findAll());
-    }
+    //public ResponseEntity<List<CorrentistaModel>> findAll() {
+      //  return ResponseEntity.status(HttpStatus.OK).body(correntistaRepository.findAll());
+    //}
 
 
     public CorrentistaModel save(CorrentistaModel correntistaModel) {
@@ -43,7 +45,8 @@ public class CorrentistaService {
         correntistaRepository.delete(correntistaModel);
     }
 
-    public Page<CorrentistaModel> findAll(Pageable pageable) {
-        return correntistaRepository.findAll(pageable);
+
+    public Page<CorrentistaModel> findAll(SpecificationTemplate.UserSpec spec, Pageable pageable) {
+        return correntistaRepository.findAll(spec, pageable);
     }
 }

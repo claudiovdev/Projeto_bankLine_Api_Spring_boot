@@ -3,6 +3,7 @@ package com.dio.santander.bankline_api.services;
 import com.dio.santander.bankline_api.models.MovimentacaoModel;
 import com.dio.santander.bankline_api.repositories.CorrentistaRepository;
 import com.dio.santander.bankline_api.repositories.MovimentacaoRepository;
+import com.dio.santander.bankline_api.specifications.SpecificationTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,11 +23,9 @@ public class MovimentacaoService {
     @Autowired
     CorrentistaRepository correntistaRepository;
 
-    //public List<MovimentacaoModel> findAll() {return movimentacaoRepository.findAll();}
 
-    public List<MovimentacaoModel>findAll(){
-        return movimentacaoRepository.findAll();
-    }
+
+    public List<MovimentacaoModel>findAll(){return movimentacaoRepository.findAll();}
 
     public Optional<MovimentacaoModel> findById(UUID movimentacaoId) {
         return movimentacaoRepository.findById(movimentacaoId);
@@ -44,7 +43,7 @@ public class MovimentacaoService {
         movimentacaoRepository.delete(movimentacaoModel);
     }
 
-    public Page<MovimentacaoModel> findAll(Pageable pageable) {
-        return movimentacaoRepository.findAll(pageable);
+    public Page<MovimentacaoModel> findAll(SpecificationTemplate.MoviSpec spec, Pageable pageable) {
+        return movimentacaoRepository.findAll(spec, pageable);
     }
 }
